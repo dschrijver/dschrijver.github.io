@@ -3,18 +3,97 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+      </script>
+      <script type="text/javascript"
+        src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      </script>
     <title>Collection of Computational Physics Projects by Daan Schrijver</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
-            background-color: black;
+            background-color: lightgray;
+            color: black;
+            font-family: serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h3 {
+            cursor: pointer;
+        }
+
+        video {
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        #container {
+            width: 100%;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: flex-start
+        }
+
+        .item {
+            width: 48%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        .info {
+            width: 90%;
         }
     </style>
 </head>
 <body>
+    <h1>Collection of Computational Physics Projects by Daan Schrijver</h1>
     <div id = "container">
+        <div class = "item">
+            <video controls muted poster = "turbulence_image.png">
+                <source src = "turbulence_video.mp4" type="video/mp4"/>
+            </video>
+            <div class = "info">
+                <h3 onclick= "location.href = 'https://github.com/dschrijver/simulations';">Turbulent flow in a pipe around an obstacle</h3>
+                <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the distributions are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
+                \begin{equation}
+                \begin{split}
+                    \rho(\boldsymbol{r}, t) &= \sum_i f_i(\boldsymbol{r},t)\\
+                    \boldsymbol{u}(\boldsymbol{r}, t) &= \frac{\sum_i \boldsymbol{c}_i f_i(\boldsymbol{r},t)}{\sum_i f_i(\boldsymbol{r},t)}
+                \end{split}
+                \end{equation}
+                Where $\rho$ is the density and $\boldsymbol{u}$ is the macroscopic velocity. The distributions can now be evolved using the Lattice Boltzmann Equation: 
+                \begin{equation}
+                    \boldsymbol{f}(\boldsymbol{r} + \boldsymbol{c}_i, t+1) = \boldsymbol{f}(\boldsymbol{r}, t) + \boldsymbol{\Omega} \left[\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right]
+                \end{equation}
+                Where $\boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)$ contains the populations if the flow would be in equilibrium. The matrix $\boldsymbol{\Omega}$ is the collision operator, which relaxes the populations $\boldsymbol{f}(\boldsymbol{r}, t)$ toward the equilibrium function. Note that I make use of lattice units from now on, such that the lattice spacing and timestep are given by $\Delta r = \Delta t = 1$. The collision operator that is used in this simulation is the simple BGK operator, given by:
+                \begin{equation}
+                    \boldsymbol{\Omega}^{\text{BGK}} = -\frac{1}{\tau} \boldsymbol{I}
+                \end{equation}
+                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time. 
 
+                <br><br>
+                <h4>References</h4>
+                [1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice
+                    boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer,
+                    2016).
+                </p>
+            </div>
+        </div>
+        <div class = "item">
+            <div class = "info">
+                <h3>Test</h3>
+            </div>
+        </div>
     </div>
 </body>
 </html>
