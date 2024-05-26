@@ -32,6 +32,14 @@
             margin-top: 20px;
         }
 
+        img {
+            width: 100%;
+        }
+
+        .img-box {
+            width: 90%;
+        }
+
         #container {
             width: 100%;
             margin-bottom: 50px;
@@ -42,12 +50,19 @@
         }
 
         .item {
-            width: 48%;
+            width: 95%;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             background-color: white;
             border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        @media screen and (min-width: 1200px) {
+            .item {
+                width: 48%;
+            }
         }
 
         .info {
@@ -64,7 +79,7 @@
             </video>
             <div class = "info">
                 <h3 onclick= "location.href = 'https://github.com/dschrijver/simulations';">Turbulent flow in a pipe around an obstacle</h3>
-                <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the distributions are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
+                <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the populations are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
                 \begin{equation}
                 \begin{split}
                     \rho(\boldsymbol{r}, t) &= \sum_i f_i(\boldsymbol{r},t)\\
@@ -79,10 +94,24 @@
                 \begin{equation}
                     \boldsymbol{\Omega}^{\text{BGK}} = -\frac{1}{\tau} \boldsymbol{I}
                 \end{equation}
-                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time. 
+                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time. The equilibrium distributions can be calculated again from the macroscopic quantities: 
+                \begin{equation}
+                    f_i^{\text{eq}} = w_i \rho(\boldsymbol{r},t) \left(1 + \frac{\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i}{c_s^2} + \frac{(\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i)^2}{2c_s^4} - \frac{|\boldsymbol{u}(\boldsymbol{r},t)|^2}{2c_s^2}\right)
+                \end{equation}
+                Where the parameters $w_i$ are the weights of velocities $\boldsymbol{c_i}$. The speed of sound used in this model is given by $c_s = \frac{1}{\sqrt{3}}$ in lattice units. 
+                </p>
+                <p>The simulation can now be started by initializing the density and velocity profile of the flow. In this case, the initial density profile is set to unity at every gridpoint, and the starting velocities $\boldsymbol{u}$ are zero. With this, the starting equilibrium populations $\boldsymbol{f}^{\text{eq}}$ can be calculated, and we assume that the starting populations $\boldsymbol{f}$ are in equilibrium. This allows us to start the evolution of $\boldsymbol{f}$. 
+                </p>
+                <p>The Lattice Boltzmann Equation can be split into two parts: the streaming step and the collision step. The streaming step is given by:
+                \begin{equation}
+                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r} - \boldsymbol{c}_i, t)
+                \end{equation}
+                Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. 
+                
 
-                <br><br>
+                </p><br>
                 <h4>References</h4>
+                <p>
                 [1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice
                     boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer,
                     2016).
@@ -90,8 +119,28 @@
             </div>
         </div>
         <div class = "item">
+            <video controls muted poster = "fractal_image.png">
+                <source src = "fractal_video.mp4" type="video/mp4"/>
+            </video>
             <div class = "info">
-                <h3>Test</h3>
+                <h3>Creating Fractals With the Double Pendulum</h3>
+                <img src = "fractal_image_2.jpg"/>
+            </div>
+        </div>
+        <div class = "item">
+            <video controls muted poster = "ising_image.png">
+                <source src = "ising_video.mp4" type="video/mp4"/>
+            </video>
+            <div class = "info">
+                <h3>The Ising Model</h3>
+            </div>
+        </div>
+        <div class = "item">
+            <div class = "img-box">
+                <img src = "efimov_image.png"/>
+            </div>
+            <div class = "info">
+                <h3>Solving the quantum mechanical few-body problem using machine learning</h3>
             </div>
         </div>
     </div>
