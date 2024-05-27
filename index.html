@@ -19,14 +19,6 @@
             font-family: serif;
         }
 
-        h1 {
-            text-align: center;
-        }
-
-        h3 {
-            cursor: pointer;
-        }
-
         a {
             text-decoration: none;
             color: blue;
@@ -37,17 +29,11 @@
         }
 
         video {
-            width: 90%;
-            margin-top: 20px;
+            width: 100%;
         }
 
         img {
             width: 100%;
-            margin-top: 20px;
-        }
-
-        .img-small {
-            width: 60%;
         }
 
         #container {
@@ -67,10 +53,10 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            flex-direction: row;
             background-color: white;
             border-radius: 10px;
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
         @media screen and (min-width: 1200px) {
@@ -87,9 +73,11 @@
 <body>
     <div id = "container">
         <div class = "item">
-            <video controls muted loop poster = "turbulence_image.png">
-                <source src = "turbulence_video.mp4" type="video/mp4"/>
-            </video>
+            <div style = "width: 90%; margin-top: 20px;">
+                <video controls muted loop poster = "turbulence_image.png">
+                    <source src = "turbulence_video.mp4" type="video/mp4"/>
+                </video>
+            </div>
             <div class = "info">
                 <h3><a href = "https://github.com/dschrijver/simulations">Turbulent Flow in a Pipe Around an Obstacle</a></h3>
                 <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the populations are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
@@ -117,29 +105,44 @@
                 </p>
                 <p>The Lattice Boltzmann Equation can be split into two parts: the streaming step and the collision step. The streaming step is given by:
                 \begin{equation}
-                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r} - \boldsymbol{c}_i, t)
+                    f_i^\ast(\boldsymbol{r}, t) = f_i(\boldsymbol{r} - \boldsymbol{c}_i, t)
                 \end{equation}
-                Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. 
-                
-
+                Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. Periodic boundary conditions applied on the distribution function can be written down in a general manner:
+                \begin{equation}
+                    \boldsymbol{f}(\boldsymbol{r} + \boldsymbol{L}, t) = \boldsymbol{f}(\boldsymbol{r}, t)
+                \end{equation}
+                Where $\boldsymbol{L}$ is a vector containing the sidelengths for a square domain. This means that the populations streaming out of the domain on the right side enter the nodes on the left, and vice versa. 
+                <div style = "width: 80%;">
+                    <img src = "periodic_bcs_image.png"/>
+                </div>
+                So the streaming equation can be modified as:
+                \begin{equation}
+                    f_i^\ast(\boldsymbol{r}, t) = f_i\left(\left(\boldsymbol{r} - \boldsymbol{c}_i\right) \%\, \boldsymbol{L}, t\right)
+                \end{equation}
+                Where the percent sign indicates an element-wise modulo operation. On the top and bottom of the domain I need to implement the solid walls of the pipe. To conserve mass, populations streaming out of the wall should bounce back. 
+                <div style = "width: 60%;">
+                    <img src = "bounceback_bcs_image.png"/>
+                </div>
+                Both directions of the velocity of the populations streaming out of the domain are reversed. 
                 </p><br>
                 <h4>References</h4>
-                <p>
-                [1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice
-                    boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer,
-                    2016).
+                <p>[1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer, 2016). 
                 </p>
             </div>
         </div>
         <div class = "item">
-            <video controls muted loop poster = "fractal_image.png" style = "width: 60%;">
-                <source src = "fractal_video.mp4" type="video/mp4"/>
-            </video>
+            <div style = "width: 60%; margin-top: 20px;">
+                <video controls muted loop poster = "fractal_image.png">
+                    <source src = "fractal_video.mp4" type="video/mp4"/>
+                </video>
+            </div>
             <div class = "info">
                 <h3>Creating Fractals With the Double Pendulum</h3>
                 <p>A dynamic fractal can be created by simulating the movement of a double pendulum for many different starting positions. 
                 </p>
-                <img class = "img-small" src = "pendulum_image.png"/>
+                <div style = "width: 60%;">
+                    <img src = "pendulum_image.png"/>
+                </div>
                 <p>The kinetic and potential energy of this system can be calculated:
                 \begin{equation}
                 \begin{split}
@@ -168,20 +171,23 @@
                 \end{equation}
                 Which can be converted to a system of four ordinary differential equations by using $\omega_1 \equiv \dot{\theta_1}$ and $\omega_2 \equiv \dot{\theta_2}$. These equations can now be solved numerically using the Runge-Kutta method.
                 </p>
-                
-                <img class = "img-small" src = "fractal_image_2.jpg"/>
+                <div style = "width: 60%;">
+                    <img src = "fractal_image_2.jpg"/>
+                </div>
             </div>
         </div>
         <div class = "item">
-            <video controls muted loop poster = "ising_image.png">
-                <source src = "ising_video.mp4" type="video/mp4"/>
-            </video>
+            <div style = "width: 90%; margin-top: 20px;">
+                <video controls muted loop poster = "ising_image.png">
+                    <source src = "ising_video.mp4" type="video/mp4"/>
+                </video>
+            </div>
             <div class = "info">
                 <h3>The Ising Model</h3>
             </div>
         </div>
         <div class = "item">
-            <div class = "img-small">
+            <div style = "width: 75%; margin-top: 20px;">
                 <img src = "efimov_image.png"/>
             </div>
             <div class = "info">
