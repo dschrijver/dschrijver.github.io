@@ -161,9 +161,12 @@
                 These equations can be rewritten in the following way:
                 \begin{equation}
                 \begin{split}
-                    \ddot{\theta_1} = -\frac{(2 m_1 + m_2)g\sin(\theta_1) + m_2 g \sin\left(\theta_1 - 2 \theta_2\right) + 2 m_2\sin\left(\theta_1 - \theta_2\right)\left(l_2\left(\dot{\theta_2}\right)^2\right)}{}
+                    &\ddot{\theta_1} = -\frac{(2 m_1 + m_2)g\sin(\theta_1) + m_2 g \sin\left(\theta_1 - 2 \theta_2\right) + 2 m_2\sin\left(\theta_1 - \theta_2\right)\left(l_2\dot{\theta_2}^2 + l_1\dot{\theta_1}^2 \cos \left(\theta_1 - \theta_2\right)\right)}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}\\
+                    &\ddot{\theta_2} = \frac{2 \sin \left(\theta_1 - \theta_2\right)\left[l_1 (m_1 + m_2) \dot{\theta_1}^2 + (m_1 + m_2) g \cos \left(\theta_1\right) + l_2 m_2 \dot{\theta_2}^2 \cos \left(\theta_1 - \theta_2\right)
+                    \right]}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}
                 \end{split}
                 \end{equation}
+                Which can be converted to a system of four ordinary differential equations by using $\omega_1 \equiv \dot{\theta_1}$ and $\omega_2 \equiv \dot{\theta_2}$. These equations can now be solved numerically using the Runge-Kutta method.
                 </p>
                 
                 <img class = "img-small" src = "fractal_image_2.jpg"/>
