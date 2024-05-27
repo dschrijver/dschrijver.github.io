@@ -27,6 +27,15 @@
             cursor: pointer;
         }
 
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            color: rgb(122, 159, 228);
+        }
+
         video {
             width: 90%;
             margin-top: 20px;
@@ -34,26 +43,31 @@
 
         img {
             width: 100%;
+            margin-top: 20px;
         }
 
-        .img-box {
-            width: 90%;
+        .img-small {
+            width: 60%;
         }
 
         #container {
             width: 100%;
-            margin-bottom: 50px;
+            height: 100vh;
+            overflow-y: scroll;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-evenly;
             flex-wrap: wrap;
             align-items: flex-start
         }
 
         .item {
-            width: 95%;
+            width: 90%;
+            height: 95%;
+            overflow-y: scroll;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            flex-direction: row;
             background-color: white;
             border-radius: 10px;
             margin-top: 10px;
@@ -61,7 +75,7 @@
 
         @media screen and (min-width: 1200px) {
             .item {
-                width: 48%;
+                width: 45%;
             }
         }
 
@@ -71,14 +85,13 @@
     </style>
 </head>
 <body>
-    <h1>Collection of Computational Physics Projects by Daan Schrijver</h1>
     <div id = "container">
         <div class = "item">
-            <video controls muted poster = "turbulence_image.png">
+            <video controls muted loop poster = "turbulence_image.png">
                 <source src = "turbulence_video.mp4" type="video/mp4"/>
             </video>
             <div class = "info">
-                <h3 onclick= "location.href = 'https://github.com/dschrijver/simulations';">Turbulent flow in a pipe around an obstacle</h3>
+                <h3><a href = "https://github.com/dschrijver/simulations">Turbulent Flow in a Pipe Around an Obstacle</a></h3>
                 <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the populations are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
                 \begin{equation}
                 \begin{split}
@@ -119,16 +132,45 @@
             </div>
         </div>
         <div class = "item">
-            <video controls muted poster = "fractal_image.png">
+            <video controls muted loop poster = "fractal_image.png" style = "width: 60%;">
                 <source src = "fractal_video.mp4" type="video/mp4"/>
             </video>
             <div class = "info">
                 <h3>Creating Fractals With the Double Pendulum</h3>
-                <img src = "fractal_image_2.jpg"/>
+                <p>A dynamic fractal can be created by simulating the movement of a double pendulum for many different starting positions. 
+                </p>
+                <img class = "img-small" src = "pendulum_image.png"/>
+                <p>The kinetic and potential energy of this system can be calculated:
+                \begin{equation}
+                \begin{split}
+                    &T = \frac{1}{2} m_1 \left(l_1 \dot{\theta_1}\right)^2 + \frac{1}{2}m_2\left[\left(l_1\dot{\theta}_1\right)^2 + \left(l_2\dot{\theta}_2\right)^2 + 2 l_1 l_2 \dot{\theta}_1\dot{\theta}_2 \cos(\theta_1 - \theta_2)\right]\\
+                    &U = -m_1 g \left(l_1 \cos\theta_1\right) - m_2 g \left[l_1 \cos\left(\theta_1\right) + l_2 \cos\left(\theta_2\right)\right]
+                \end{split}
+                \end{equation}
+                Where a dot indicates the time derivative $\frac{d}{dt}$ and $g$ indicates the gravitational acceleration. The potential energy is set to zero at the ceiling. The lagrangian is calculated as:
+                \begin{equation}
+                    L = T - U
+                \end{equation}
+                Which brings us to the equations of motion using Lagrange's equations:
+                \begin{equation}
+                \begin{split}
+                    &\frac{\partial L}{\partial \theta_1} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_1}} = 0\\
+                    &\frac{\partial L}{\partial \theta_2} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_2}} = 0
+                \end{split}
+                \end{equation}
+                These equations can be rewritten in the following way:
+                \begin{equation}
+                \begin{split}
+                    \ddot{\theta_1} = -\frac{(2 m_1 + m_2)g\sin(\theta_1) + m_2 g \sin\left(\theta_1 - 2 \theta_2\right) + 2 m_2\sin\left(\theta_1 - \theta_2\right)\left(l_2\left(\dot{\theta_2}\right)^2\right)}{}
+                \end{split}
+                \end{equation}
+                </p>
+                
+                <img class = "img-small" src = "fractal_image_2.jpg"/>
             </div>
         </div>
         <div class = "item">
-            <video controls muted poster = "ising_image.png">
+            <video controls muted loop poster = "ising_image.png">
                 <source src = "ising_video.mp4" type="video/mp4"/>
             </video>
             <div class = "info">
@@ -136,7 +178,7 @@
             </div>
         </div>
         <div class = "item">
-            <div class = "img-box">
+            <div class = "img-small">
                 <img src = "efimov_image.png"/>
             </div>
             <div class = "info">
