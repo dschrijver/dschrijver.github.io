@@ -177,6 +177,16 @@
             </div>
         </div>
         <div class = "item">
+            <div style = "width: 80%; margin-top: 20px;">
+                <img src = "ratchet_image.png"/>
+            </div>
+            <div class = "info">
+                <h3>The Dynamics of a Soliton Ratchet</h3>
+                <p>
+                </p>
+            </div>
+        </div>
+        <div class = "item">
             <div style = "width: 90%; margin-top: 20px;">
                 <video controls muted loop poster = "ising_image.png">
                     <source src = "ising_video.mp4" type="video/mp4"/>
@@ -184,6 +194,22 @@
             </div>
             <div class = "info">
                 <h3>The Ising Model</h3>
+                <p>The Ising Model can be used to model the magnetic properties of ferromagnets. The system consists out of N lattice sites, each with a spin value of $s_i = \pm 1$. The total energy of the system is given by the following equation:
+                \begin{equation}
+                    E = -J \sum_{\langle i j \rangle} s_i s_j - \mu_B B \sum_i s_i
+                \end{equation}
+                Where $J$ denotes a single external magnetic field applied on the system, with $[B] = T$. For $B > 0$, this magnetic field is assumed to point parallel to positive spin values. It is assumed that all interactions between spins have the same strength $J$. The quantity $\mu_B$ indicates the Bohr magneton, which is the magnetic dipole moment of a single electron. The first term in the equation adds all energies of interactions between spins. The sum goes over all nearest neighbors, while making sure that every interaction is counted once. From this we can conclude that for $J > 0$, the lowest possible energy contribution due to the first term would be when all spins are aligned parallel. So $J > 0$ defines a ferromagnet, $J < 0$ defines an antiferromagnet and $J = 0$ defines a paramagnet. The second term calculates the total Zeeman energy of the system, assuming that every lattice site contains a single electron with magnetic moment $\mu_B$. This energy is minimal if all spins are aligned with the magnetic field. 
+                </p>
+                <p>A classical paramagnet has the following average magnetization:
+                \begin{equation}
+                    \langle M \rangle = N \mu_B \tanh \left(\frac{\mu_B B}{k_B T}\right)
+                \end{equation}
+                Where the averaging can either be over time or over realizations if an equilibrium is reached, ensuring ergodicity. This equation will be satisfied by the Ising Model with $J = 0$. For an (anti)ferromagnet with $J \neq 0$, Onsager's soluation gives the spontaneous magnetization for a 2D square lattice, with $B = 0$:
+                \begin{equation}
+                    \langle M \rangle = \pm N \mu_B \left[1 - \sinh^{-4} \left(\frac{2 J}{k_B T}\right)\right]^{\frac{1}{8}}
+                \end{equation}
+                Which holds for $T < T_c$, where $T_c$ is the critical temperature given by $k_B T_c \approx 2.269185 \cdot J$ for the 2D square lattice. For $T \geq T_c$, $\langle M \rangle = 0$.
+                </p>
             </div>
         </div>
         <div class = "item">
