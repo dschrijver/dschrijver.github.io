@@ -118,7 +118,7 @@
                 <p>
                 After the collision step, we can perform the streaming step, completing the Lattice Boltzmann Equation:
                 \begin{equation}
-                    f_i(\boldsymbol{r}, t) = f_i^\ast(\boldsymbol{r} - \boldsymbol{c}_i, t)
+                    f_i(\boldsymbol{r}, t + 1) = f_i^\ast(\boldsymbol{r} - \boldsymbol{c}_i, t)
                 \end{equation}
                 Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. Periodic boundary conditions applied on the distribution function can be written down in a general manner:
                 \begin{equation}
@@ -138,7 +138,7 @@
                 </div>
                 Both directions of the velocity of the populations streaming out of the domain are reversed. This brings us to an additional streaming condition if populations stream into a solid wall:
                 \begin{equation}
-                    f_i(\boldsymbol{r}, t) = f_j^\ast(\boldsymbol{r}, t)
+                    f_i(\boldsymbol{r}, t + 1) = f_j^\ast(\boldsymbol{r}, t)
                 \end{equation}
                 When $\boldsymbol{r} - \boldsymbol{c}_i$ lies on one of the solid nodes inside the wall. The index $j$ is then given by $\boldsymbol{c}_j = -\boldsymbol{c}_i$. This type of boundary condition is called halfway bounce-back, where the populations streaming out of the domain are hit the wall after a time of $\Delta t / 2$ and return back to the same node at $\Delta t$. It is assumed that the actual wall positions $\boldsymbol{r}_w$ are halfway between the outermost fluid nodes, called boundary nodes and denoted by $\boldsymbol{r}_b$, and the solid nodes just inside the wall $\boldsymbol{r}_s$.
                 </p>
