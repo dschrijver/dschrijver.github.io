@@ -124,7 +124,8 @@
                     <img src = "bounceback_bcs_image.png"/>
                 </div>
                 Both directions of the velocity of the populations streaming out of the domain are reversed. 
-                </p><br>
+                </p>
+                <br>
                 <h4>References</h4>
                 <p>[1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer, 2016). 
                 </p>
@@ -218,13 +219,28 @@
             </div>
             <div class = "info">
                 <h3>Solving the quantum mechanical few-body problem using machine learning</h3>
-                <p>In this thesis, we aim to investigate the use of artificial neural networks for solving quantum mechanical few-body problems, which are applicable to ultracold quantum gases \cite{UlCold}. It is proven in earlier research that it is possible to find the Efimov ground state \cite{EfRev} of few-body systems using machine learning, although with artificial interactions \cite{Main}. Their method will be expanded in this thesis to make use of the more realistic Van der Waals potential. 
+                <p>In this thesis, we aim to investigate the use of artificial neural networks for solving quantum mechanical few-body problems, which are applicable to ultracold quantum gases [1]. It is proven in earlier research that it is possible to find the Efimov ground state [2] of few-body systems using machine learning, although with artificial interactions [3]. Their method will be expanded in this thesis to make use of the more realistic Van der Waals potential. 
                 </p>
                 <p>
-                The results of \cite{Main} were replicated successfully in the first part of this thesis. However, it was found that it was not feasible to use the same method to find the shallow Efimov ground states of the Van der Waals potential at resonance. A scheme was proposed to slowly approach the resonance from the strongly bound regime, which enabled us to find the three-body parameter $\kappa_*= 0.276 \pm 0.044$ which is consistent with the universal result expected for Van der Waals potentials \cite{k028}. We will treat the possible improvements to the adapted method in this thesis, which can reduce the errors in the results given by the neural network. The method is also slow with respect to established methods \cite{JasArt} if the objective is to find a specific state close to resonance, but it is considerably faster when the goal is to find the ground state in a range around the resonance. There is also much room to improve the efficiency of the method, which is also discussed in this thesis. 
+                The results of [3] were replicated successfully in the first part of this thesis. However, it was found that it was not feasible to use the same method to find the shallow Efimov ground states of the Van der Waals potential at resonance. A scheme was proposed to slowly approach the resonance from the strongly bound regime, which enabled us to find the three-body parameter $\kappa_*= 0.276 \pm 0.044$ which is consistent with the universal result expected for Van der Waals potentials [4]. We will treat the possible improvements to the adapted method in this thesis, which can reduce the errors in the results given by the neural network. The method is also slow with respect to established methods [5] if the objective is to find a specific state close to resonance, but it is considerably faster when the goal is to find the ground state in a range around the resonance. There is also much room to improve the efficiency of the method, which is also discussed in this thesis. 
                 </p>
                 <p>
                 This work additionally investigates the prospects of finding excited states using a neural network, which requires some changes to the method such as an adapted loss function and a different integration method that is more suited for this particular problem. The method is also expanded in another way by introducing mass differences between the particles. This shows the robustness of the neural network method with respect to the increasing complexity of the problem. Together with the fact that the method has much room to grow in terms of accuracy and efficiency, and the flexibility of the types of problems that can be solved, a great deal of potential is shown for using artificial neural networks to solve quantum mechanical few-body problems. 
+                </p>
+                <br>
+                <h4>References</h4>
+                <p>
+                [1] C. Chin, National Science Review 3, 168 (2015).
+                <br>
+                [2] P. Naidon and S. Endo, Reports on Progress in Physics 80, 056001 (2017).
+                <br>
+                [3] H. Saito, Journal of the Physical Society of Japan 87, 074002 (2018).
+                <br>
+                [4] J. Wang, J. P. D'Incao, B. D. Esry, and C. H. Greene, Physical Review Letters 108, 10.
+1103/physrevlett.108.263001 (2012).
+                <br>
+                [5] J. van de Kraats, D. J. M. Ahmed-Braun, J.-L. Li, and S. J. J. M. F. Kokkelmans, Phys.
+Rev. A 107, 023301 (2023).
                 </p>
             </div>
         </div>
