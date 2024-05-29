@@ -75,6 +75,25 @@
         .info {
             width: 90%;
         }
+
+        table {
+            border-collapse: collapse;
+            border-style: hidden;
+        }
+
+        table td, table th {
+            border: 1px solid black;
+        }
+
+        td, th {
+            padding: 5px 10px 5px 5px;
+        }
+
+        .code {
+            width: 100%;
+            padding: 5px;
+            background-color: lightgray;
+        }
     </style>
 </head>
 <body>
@@ -102,11 +121,67 @@
                 \begin{equation}
                     \boldsymbol{\Omega}^{\text{BGK}} = -\frac{1}{\tau} \boldsymbol{I}
                 \end{equation}
-                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time. The equilibrium distributions can be calculated again from the macroscopic quantities: 
+                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time, which is connected to the kinematic viscosity in the following manner:
+                \begin{equation}
+                    \nu = \left(\tau - \frac{1}{2}\right) c_s^2
+                \end{equation}
+                The equilibrium distributions can be calculated again from the macroscopic quantities: 
                 \begin{equation}
                     f_i^{\text{eq}} = w_i \rho(\boldsymbol{r},t) \left(1 + \frac{\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i}{c_s^2} + \frac{(\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i)^2}{2c_s^4} - \frac{|\boldsymbol{u}(\boldsymbol{r},t)|^2}{2c_s^2}\right)
                 \end{equation}
                 Where the parameters $w_i$ are the weights of velocities $\boldsymbol{c_i}$. The speed of sound used in this model is given by $c_s = \frac{1}{\sqrt{3}}$ in lattice units. 
+                <table>
+                    <tr>
+                        <th>$i$</th>
+                        <th>$w_i$</th>
+                        <th>$\boldsymbol{c}_i$</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>$4/9$</td>
+                        <td>$(0, 0)$</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>$1/9$</td>
+                        <td>$(1, 0)$</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>$1/36$</td>
+                        <td>$(1, -1)$</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>$1/9$</td>
+                        <td>$(0, -1)$</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>$1/36$</td>
+                        <td>$(-1, -1)$</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>$1/9$</td>
+                        <td>$(-1, 0)$</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>$1/36$</td>
+                        <td>$(-1, 1)$</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>$1/9$</td>
+                        <td>$(0, 1)$</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>$1/36$</td>
+                        <td>$(1, 1)$</td>
+                    </tr>
+                  </table> 
                 </p>
                 <p>The simulation can now be started by initializing the density and velocity profile of the flow. In this case, the initial density profile is set to unity at every gridpoint, and the starting velocities $\boldsymbol{u}$ are zero. With this, the starting equilibrium populations $\boldsymbol{f}^{\text{eq}}$ can be calculated, and we assume that the starting populations $\boldsymbol{f}$ are in equilibrium. This allows us to start the evolution of $\boldsymbol{f}$. 
                 </p>
@@ -142,6 +217,33 @@
                 \end{equation}
                 When $\boldsymbol{r} - \boldsymbol{c}_i$ lies on one of the solid nodes inside the wall. The index $j$ is then given by $\boldsymbol{c}_j = -\boldsymbol{c}_i$. This type of boundary condition is called halfway bounce-back, where the populations streaming out of the domain are hit the wall after a time of $\Delta t / 2$ and return back to the same node at $\Delta t$. It is assumed that the actual wall positions $\boldsymbol{r}_w$ are halfway between the outermost fluid nodes, called boundary nodes and denoted by $\boldsymbol{r}_b$, and the solid nodes just inside the wall $\boldsymbol{r}_s$.
                 </p>
+                <p>A few terms need to be added to the previously stated equations if we want to introduce an external force density $\boldsymbol{F}(\boldsymbol{r}, t)$ on the fluid. When calculating the macroscopic quantities from the distribution function $\boldsymbol{f}$, a term has to be added to the velocities:
+                \begin{equation}
+                    \boldsymbol{u}(\boldsymbol{r}, t) = \frac{\left(\sum_i \boldsymbol{c}_i f_i(\boldsymbol{r},t)\right) + \frac{1}{2}\boldsymbol{F}(\boldsymbol{r}, t)}{\sum_i f_i(\boldsymbol{r},t)}
+                \end{equation}
+                Additionally, a source term needs to be added to the collision step: 
+                \begin{equation}
+                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r}, t) - \frac{1}{\tau} \left(\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right) + \boldsymbol{S}(\boldsymbol{r}, t)
+                \end{equation}
+                With 
+                \begin{equation}
+                    S_i(\boldsymbol{r}, t) = \left(1 - \frac{1}{2 \tau}\right) w_i \left[\frac{\boldsymbol{c}_i - \boldsymbol{u}(\boldsymbol{r}, t)}{c_s^2} + \frac{\boldsymbol{c}_i \cdot \boldsymbol{u}(\boldsymbol{r}, t)}{c_s^4}\boldsymbol{c}_i\right] \cdot \boldsymbol{F}(\boldsymbol{r}, t)
+                \end{equation}
+                According to the Guo. The complete algorithm can now be represented in the following way:
+                </p>
+                <div class = "code">
+                    Initialize the solid walls and obstacle<br>
+                    Initialize $\rho$(t = 0) and $\boldsymbol{u}(t = 0)$<br>
+                    Calculate $\boldsymbol{f}^{\text{eq}}(t = 0)$<br>
+                    $\boldsymbol{f} \leftarrow \boldsymbol{f}^{\text{eq}}(t = 0)$<br><br>
+                    For $t \in [0$, $t_{\text{final}})$:<br>
+                    &emsp;&emsp;Calculate $\rho(t)$ and $\boldsymbol{u}(t)$ using $\boldsymbol{f}(t)$ and $\boldsymbol{F}$<br>
+                    &emsp;&emsp;Calculate $\boldsymbol{f}^{\text{eq}}(t)$ using $\rho(t)$ and $\boldsymbol{u}(t)$<br>
+                    &emsp;&emsp;Calculate $\boldsymbol{S}(t)$ using $\rho(t)$ and $\boldsymbol{u}(t)$<br>
+                    &emsp;&emsp;Calculate $\boldsymbol{f}^\ast(t)$ using $\boldsymbol{f}(t)$ and $\boldsymbol{S}(t)$, collision step<br>
+                    &emsp;&emsp;Calculate $\boldsymbol{f}(t + 1)$ using $\boldsymbol{f}^\ast(t)$, streaming step<br><br>
+                    Calculate $\rho(t_{\text{final}})$ and $\boldsymbol{u}(t_{\text{final}})$ using $\boldsymbol{f}(t_{\text{final}})$ and $\boldsymbol{F}$
+                </div>
                 <br>
                 <h4>References</h4>
                 <p>[1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer, 2016). 
