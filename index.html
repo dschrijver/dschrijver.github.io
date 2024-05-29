@@ -4,11 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-      </script>
-      <script type="text/javascript"
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript"
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-      </script>
+    </script>
+    <script>
+        window.MathJax = {
+            
+        };
+    </script>
     <title>Collection of Computational Physics Projects by Daan Schrijver</title>
     <style>
         html, body {
@@ -103,13 +110,19 @@
                 </p>
                 <p>The simulation can now be started by initializing the density and velocity profile of the flow. In this case, the initial density profile is set to unity at every gridpoint, and the starting velocities $\boldsymbol{u}$ are zero. With this, the starting equilibrium populations $\boldsymbol{f}^{\text{eq}}$ can be calculated, and we assume that the starting populations $\boldsymbol{f}$ are in equilibrium. This allows us to start the evolution of $\boldsymbol{f}$. 
                 </p>
-                <p>The Lattice Boltzmann Equation can be split into two parts: the streaming step and the collision step. The streaming step is given by:
+                <p>The Lattice Boltzmann Equation can be split into two parts: the collision step and the streaming step. The collision step is given by:
                 \begin{equation}
-                    f_i^\ast(\boldsymbol{r}, t) = f_i(\boldsymbol{r} - \boldsymbol{c}_i, t)
+                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r}, t) - \frac{1}{\tau} \left(\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right)
+                \end{equation}
+                </p>
+                <p>
+                After the collision step, we can perform the streaming step, completing the Lattice Boltzmann Equation:
+                \begin{equation}
+                    f_i(\boldsymbol{r}, t) = f_i^\ast(\boldsymbol{r} - \boldsymbol{c}_i, t)
                 \end{equation}
                 Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. Periodic boundary conditions applied on the distribution function can be written down in a general manner:
                 \begin{equation}
-                    \boldsymbol{f}(\boldsymbol{r} + \boldsymbol{L}, t) = \boldsymbol{f}(\boldsymbol{r}, t)
+                    \boldsymbol{f}^\ast(\boldsymbol{r} + \boldsymbol{L}, t) = \boldsymbol{f}^\ast(\boldsymbol{r}, t)
                 \end{equation}
                 Where $\boldsymbol{L}$ is a vector containing the sidelengths for a square domain. This means that the populations streaming out of the domain on the right side enter the nodes on the left, and vice versa. 
                 <div style = "width: 80%;">
@@ -117,13 +130,17 @@
                 </div>
                 So the streaming equation can be modified as:
                 \begin{equation}
-                    f_i^\ast(\boldsymbol{r}, t) = f_i\left(\left(\boldsymbol{r} - \boldsymbol{c}_i\right) \%\, \boldsymbol{L}, t\right)
+                    f_i(\boldsymbol{r}, t + 1) = f_i^\ast\left(\left(\boldsymbol{r} - \boldsymbol{c}_i\right) \%\, \boldsymbol{L}, t\right)
                 \end{equation}
                 Where the percent sign indicates an element-wise modulo operation. On the top and bottom of the domain I need to implement the solid walls of the pipe. To conserve mass, populations streaming out of the wall should bounce back. 
                 <div style = "width: 60%;">
                     <img src = "bounceback_bcs_image.png"/>
                 </div>
-                Both directions of the velocity of the populations streaming out of the domain are reversed. 
+                Both directions of the velocity of the populations streaming out of the domain are reversed. This brings us to an additional streaming condition if populations stream into a solid wall:
+                \begin{equation}
+                    f_i(\boldsymbol{r}, t) = f_j^\ast(\boldsymbol{r}, t)
+                \end{equation}
+                When $\boldsymbol{r} - \boldsymbol{c}_i$ lies on one of the solid nodes inside the wall. The index $j$ is then given by $\boldsymbol{c}_j = -\boldsymbol{c}_i$. This type of boundary condition is called halfway bounce-back, where the populations streaming out of the domain are hit the wall after a time of $\Delta t / 2$ and return back to the same node at $\Delta t$. It is assumed that the actual wall positions $\boldsymbol{r}_w$ are halfway between the outermost fluid nodes, called boundary nodes and denoted by $\boldsymbol{r}_b$, and the solid nodes just inside the wall $\boldsymbol{r}_s$.
                 </p>
                 <br>
                 <h4>References</h4>
@@ -183,33 +200,12 @@
             </div>
             <div class = "info">
                 <h3>The Dynamics of a Soliton Ratchet</h3>
-                <p>
+                <p>The smallest scales are currently being reached for the fabrication of electronic devices nowadays. Another way of increasing the density of these devices can be to extend them into the third dimension. One of the devices that can already be made in a three-dimensional configuration is called a shift register. It transfers data along a chain, and it can be constructed out of transistors. However, this would drastically increase the complexity of the process flow required for the production of the device. Another way of constructing a shift register is by making use of magnetic kink solitons, which are vertically transferred throughout a stack of sub-nanometer thick layers of ferromagnetic material [1]. 
                 </p>
-            </div>
-        </div>
-        <div class = "item">
-            <div style = "width: 90%; margin-top: 20px;">
-                <video controls muted loop poster = "ising_image.png">
-                    <source src = "ising_video.mp4" type="video/mp4"/>
-                </video>
-            </div>
-            <div class = "info">
-                <h3>The Ising Model</h3>
-                <p>The Ising Model can be used to model the magnetic properties of ferromagnets. The system consists out of N lattice sites, each with a spin value of $s_i = \pm 1$. The total energy of the system is given by the following equation:
-                \begin{equation}
-                    E = -J \sum_{\langle i j \rangle} s_i s_j - \mu_B B \sum_i s_i
-                \end{equation}
-                Where $J$ denotes a single external magnetic field applied on the system, with $[B] = T$. For $B > 0$, this magnetic field is assumed to point parallel to positive spin values. It is assumed that all interactions between spins have the same strength $J$. The quantity $\mu_B$ indicates the Bohr magneton, which is the magnetic dipole moment of a single electron. The first term in the equation adds all energies of interactions between spins. The sum goes over all nearest neighbors, while making sure that every interaction is counted once. From this we can conclude that for $J > 0$, the lowest possible energy contribution due to the first term would be when all spins are aligned parallel. So $J > 0$ defines a ferromagnet, $J < 0$ defines an antiferromagnet and $J = 0$ defines a paramagnet. The second term calculates the total Zeeman energy of the system, assuming that every lattice site contains a single electron with magnetic moment $\mu_B$. This energy is minimal if all spins are aligned with the magnetic field. 
-                </p>
-                <p>A classical paramagnet has the following average magnetization:
-                \begin{equation}
-                    \langle M \rangle = N \mu_B \tanh \left(\frac{\mu_B B}{k_B T}\right)
-                \end{equation}
-                Where the averaging can either be over time or over realizations if an equilibrium is reached, ensuring ergodicity. This equation will be satisfied by the Ising Model with $J = 0$. For an (anti)ferromagnet with $J \neq 0$, Onsager's soluation gives the spontaneous magnetization for a 2D square lattice, with $B = 0$:
-                \begin{equation}
-                    \langle M \rangle = \pm N \mu_B \left[1 - \sinh^{-4} \left(\frac{2 J}{k_B T}\right)\right]^{\frac{1}{8}}
-                \end{equation}
-                Which holds for $T < T_c$, where $T_c$ is the critical temperature given by $k_B T_c \approx 2.269185 \cdot J$ for the 2D square lattice. For $T \geq T_c$, $\langle M \rangle = 0$.
+                <br>
+                <h4>References</h4>
+                <p>[1] R. Lavrijsen, J.-H. Lee, A. Fern ́andez-Pacheco, D. C. M. C. Petit, R. Mansell, and R. P.
+                    Cowburn, Nature 493, 647 (2013).
                 </p>
             </div>
         </div>
@@ -241,6 +237,32 @@
                 <br>
                 [5] J. van de Kraats, D. J. M. Ahmed-Braun, J.-L. Li, and S. J. J. M. F. Kokkelmans, Phys.
 Rev. A 107, 023301 (2023).
+                </p>
+            </div>
+        </div>
+        <div class = "item">
+            <div style = "width: 90%; margin-top: 20px;">
+                <video controls muted loop poster = "ising_image.png">
+                    <source src = "ising_video.mp4" type="video/mp4"/>
+                </video>
+            </div>
+            <div class = "info">
+                <h3>The Ising Model</h3>
+                <p>The Ising Model can be used to model the magnetic properties of ferromagnets. The system consists out of N lattice sites, each with a spin value of $s_i = \pm 1$. The total energy of the system is given by the following equation:
+                \begin{equation}
+                    E = -J \sum_{\langle i j \rangle} s_i s_j - \mu_B B \sum_i s_i
+                \end{equation}
+                Where $J$ denotes a single external magnetic field applied on the system, with $[B] = T$. For $B > 0$, this magnetic field is assumed to point parallel to positive spin values. It is assumed that all interactions between spins have the same strength $J$. The quantity $\mu_B$ indicates the Bohr magneton, which is the magnetic dipole moment of a single electron. The first term in the equation adds all energies of interactions between spins. The sum goes over all nearest neighbors, while making sure that every interaction is counted once. From this we can conclude that for $J > 0$, the lowest possible energy contribution due to the first term would be when all spins are aligned parallel. So $J > 0$ defines a ferromagnet, $J < 0$ defines an antiferromagnet and $J = 0$ defines a paramagnet. The second term calculates the total Zeeman energy of the system, assuming that every lattice site contains a single electron with magnetic moment $\mu_B$. This energy is minimal if all spins are aligned with the magnetic field. 
+                </p>
+                <p>A classical paramagnet has the following average magnetization:
+                \begin{equation}
+                    \langle M \rangle = N \mu_B \tanh \left(\frac{\mu_B B}{k_B T}\right)
+                \end{equation}
+                Where the averaging can either be over time or over realizations if an equilibrium is reached, ensuring ergodicity. This equation will be satisfied by the Ising Model with $J = 0$. For an (anti)ferromagnet with $J \neq 0$, Onsager's soluation gives the spontaneous magnetization for a 2D square lattice, with $B = 0$:
+                \begin{equation}
+                    \langle M \rangle = \pm N \mu_B \left[1 - \sinh^{-4} \left(\frac{2 J}{k_B T}\right)\right]^{\frac{1}{8}}
+                \end{equation}
+                Which holds for $T < T_c$, where $T_c$ is the critical temperature given by $k_B T_c \approx 2.269185 \cdot J$ for the 2D square lattice. For $T \geq T_c$, $\langle M \rangle = 0$. Note that the unit of the magnetization used here is given by $[M] = A m^2$, instead of the usual $[M] = A/m$. This is because the magnetization calculated here is the total of the system, instead of the magnetic moment per unit of volume. 
                 </p>
             </div>
         </div>
