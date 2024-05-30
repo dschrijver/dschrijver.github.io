@@ -98,7 +98,7 @@
 </head>
 <body>
     <div id = "container">
-        <div class = "item">
+        <div class = "item" id = "turbulence">
             <div style = "width: 90%; margin-top: 20px;">
                 <video controls muted loop poster = "turbulence_image.png">
                     <source src = "turbulence_video.mp4" type="video/mp4"/>
@@ -233,9 +233,9 @@
                 </p>
                 <div class = "code">
                     Initialize the solid walls and obstacle<br>
-                    Initialize $\rho$(t = 0) and $\boldsymbol{u}(t = 0)$<br>
+                    Initialize $\rho(t = 0)$ and $\boldsymbol{u}(t = 0)$<br>
                     Calculate $\boldsymbol{f}^{\text{eq}}(t = 0)$<br>
-                    $\boldsymbol{f} \leftarrow \boldsymbol{f}^{\text{eq}}(t = 0)$<br><br>
+                    $\boldsymbol{f}(t = 0) \leftarrow \boldsymbol{f}^{\text{eq}}(t = 0)$<br><br>
                     For $t \in [0$, $t_{\text{final}})$:<br>
                     &emsp;&emsp;Calculate $\rho(t)$ and $\boldsymbol{u}(t)$ using $\boldsymbol{f}(t)$ and $\boldsymbol{F}$<br>
                     &emsp;&emsp;Calculate $\boldsymbol{f}^{\text{eq}}(t)$ using $\rho(t)$ and $\boldsymbol{u}(t)$<br>
@@ -250,7 +250,7 @@
                 </p>
             </div>
         </div>
-        <div class = "item">
+        <div class = "item" id = "fractal">
             <div style = "width: 60%; margin-top: 20px;">
                 <video controls muted loop poster = "fractal_image.png">
                     <source src = "fractal_video.mp4" type="video/mp4"/>
@@ -296,7 +296,7 @@
                 </div>
             </div>
         </div>
-        <div class = "item">
+        <div class = "item" id = "ratchet">
             <div style = "width: 80%; margin-top: 20px;">
                 <img src = "ratchet_image.png"/>
             </div>
@@ -311,7 +311,7 @@
                 </p>
             </div>
         </div>
-        <div class = "item">
+        <div class = "item" id = "efimov">
             <div style = "width: 75%; margin-top: 20px;">
                 <img src = "efimov_image.png"/>
             </div>
@@ -342,7 +342,7 @@ Rev. A 107, 023301 (2023).
                 </p>
             </div>
         </div>
-        <div class = "item">
+        <div class = "item" id = "ising">
             <div style = "width: 90%; margin-top: 20px;">
                 <video controls muted loop poster = "ising_image.png">
                     <source src = "ising_video.mp4" type="video/mp4"/>
