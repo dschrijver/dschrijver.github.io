@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <title>Creating Fractals With the Double Pendulum</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: lightgray;
+        }
+        #container {
+            max-width: 1200px;
+            width: 90%;
+            margin: auto;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        a {
+            font-size: 20px;
+            color: blue;
+            text-decoration: none;
+        }
+        a:hover {
+            color: rgb(122, 159, 228);
+            cursor: pointer;
+        }
+        video {
+            width: 100%;
+        }
+        .vid-box {
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        img {
+            width: 100%;
+        }
+        .img-box {
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        table {
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            border-style: hidden;
+        }
+        table td, table th {
+            border: 1px solid black;
+        }
+        td, th {
+            padding: 5px 10px 5px 5px;
+        }
+        .code {
+            width: 95%;
+            padding: 10px;
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: lightgray;
+        }
+        .back {
+            background-color: #f1f1f1;
+            color: black;
+            border-radius: 50%;
+            position: fixed; 
+            left: 5px;
+            top: 5px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+        }
+        .back:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id = "container">
+        <h1>Creating Fractals With the Double Pendulum <a href = "#">(repository)</a></h1>
+        <div class = "vid-box" style = "width: 90%; max-width: 500px;">
+            <video controls muted loop poster = "fractal_image.png">
+                <source src = "fractal_video.mp4" type="video/mp4"/>
+            </video>
+        </div>
+        <p>A dynamic fractal can be created by simulating the movement of a double pendulum for many different starting positions. 
+        </p>
+        <div class = "img-box" style = "width: 60%;">
+            <img src = "pendulum_image.png"/>
+        </div>
+        <p>The kinetic and potential energy of this system can be calculated:
+        \begin{equation}
+        \begin{split}
+            &T = \frac{1}{2} m_1 \left(l_1 \dot{\theta_1}\right)^2 + \frac{1}{2}m_2\left[\left(l_1\dot{\theta}_1\right)^2 + \left(l_2\dot{\theta}_2\right)^2 + 2 l_1 l_2 \dot{\theta}_1\dot{\theta}_2 \cos(\theta_1 - \theta_2)\right]\\
+            &U = -m_1 g \left(l_1 \cos\theta_1\right) - m_2 g \left[l_1 \cos\left(\theta_1\right) + l_2 \cos\left(\theta_2\right)\right]
+        \end{split}
+        \end{equation}
+        Where a dot indicates the time derivative $\frac{d}{dt}$ and $g$ indicates the gravitational acceleration. The potential energy is set to zero at the ceiling. The lagrangian is calculated as:
+        \begin{equation}
+            L = T - U
+        \end{equation}
+        Which brings us to the equations of motion using Lagrange's equations:
+        \begin{equation}
+        \begin{split}
+            &\frac{\partial L}{\partial \theta_1} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_1}} = 0\\
+            &\frac{\partial L}{\partial \theta_2} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_2}} = 0
+        \end{split}
+        \end{equation}
+        These equations can be rewritten in the following way:
+        \begin{equation}
+        \begin{split}
+            &\ddot{\theta_1} = -\frac{(2 m_1 + m_2)g\sin(\theta_1) + m_2 g \sin\left(\theta_1 - 2 \theta_2\right) + 2 m_2\sin\left(\theta_1 - \theta_2\right)\left(l_2\dot{\theta_2}^2 + l_1\dot{\theta_1}^2 \cos \left(\theta_1 - \theta_2\right)\right)}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}\\
+            &\ddot{\theta_2} = \frac{2 \sin \left(\theta_1 - \theta_2\right)\left[l_1 (m_1 + m_2) \dot{\theta_1}^2 + (m_1 + m_2) g \cos \left(\theta_1\right) + l_2 m_2 \dot{\theta_2}^2 \cos \left(\theta_1 - \theta_2\right)
+            \right]}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}
+        \end{split}
+        \end{equation}
+        Which can be converted to a system of four ordinary differential equations by using $\omega_1 \equiv \dot{\theta_1}$ and $\omega_2 \equiv \dot{\theta_2}$. These equations can now be solved numerically using the Runge-Kutta method.
+        </p>
+        <div class = "img-box" style = "width: 60%;">
+            <img src = "fractal_image_2.jpg"/>
+        </div>
+    </div>
+    <a href="index.html" class="back">&#8249;</a>
+</body>
+</html>

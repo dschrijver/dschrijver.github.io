@@ -3,369 +3,78 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-        });
-    </script>
-    <script type="text/javascript"
-        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
-    <script>
-        window.MathJax = {
-            
-        };
-    </script>
     <title>Collection of Computational Physics Projects by Daan Schrijver</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
             background-color: lightgray;
-            color: black;
-            font-family: serif;
         }
-
+        #container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+        .column {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-self: start; 
+        }
+        .item {
+            background-color: white;
+            border-radius: 10px;
+            padding-top: 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            text-align: center;
+        }
+        video, img {
+            width: 85%;
+        }
         a {
             text-decoration: none;
             color: blue;
         }
-
         a:hover {
             color: rgb(122, 159, 228);
-        }
-
-        video {
-            width: 100%;
-        }
-
-        img {
-            width: 100%;
-        }
-
-        #container {
-            width: 100%;
-            height: 100dvh;
-            overflow-y: scroll;
-            display: flex;
-            justify-content: space-evenly;
-            flex-wrap: wrap;
-            align-items: flex-start
-        }
-
-        .item {
-            width: 90%;
-            height: 95%;
-            overflow-y: scroll;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            background-color: white;
-            border-radius: 10px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-        @media screen and (min-width: 1200px) {
-            .item {
-                width: 47%;
-            }
-        }
-
-        .info {
-            width: 90%;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-style: hidden;
-        }
-
-        table td, table th {
-            border: 1px solid black;
-        }
-
-        td, th {
-            padding: 5px 10px 5px 5px;
-        }
-
-        .code {
-            width: 100%;
-            padding: 5px;
-            background-color: lightgray;
         }
     </style>
 </head>
 <body>
     <div id = "container">
-        <div class = "item" id = "turbulence">
-            <div style = "width: 90%; margin-top: 20px;">
+        <h1>Collection of Computational Physics Projects by Daan Schrijver</h1>
+        <div class = "column">
+            <div class = "item">
                 <video controls muted loop poster = "turbulence_image.png">
                     <source src = "turbulence_video.mp4" type="video/mp4"/>
                 </video>
+                <h3><a href = "turbulence.html">Turbulent Flow in a Pipe Around an Obstacle</a></h3>
             </div>
-            <div class = "info">
-                <h3><a href = "https://github.com/dschrijver/turbulence">Turbulent Flow in a Pipe Around an Obstacle</a></h3>
-                <p>The Lattice Boltzmann Equation is a versatile model to simulate the dynamics of macroscopic and mesoscopic flows, as it effectively solves the Navier Stokes equation for low Mach numbers. Instead of evolving macroscopic quantities such as the velocity and density profile of the flow, the Lattice Boltzmann Equation evolves the discrete-velocity distribution function $\boldsymbol{f}(\boldsymbol{r}, t)$. Space and time are discretized in this model by taking a number of gridpoints in the domain of interest, and evolving the system stepwise over time. The velocities of the populations are discretized by only taking into account a select few directions. The type of model chosen can be described by the term "DdQn", where 'd' indicates the dimension of the simulation, and 'n' is the number of velocity directions $\boldsymbol{c}_i$ at every gridpoint. For this specific case I used the D2Q9 model [1]. This makes the vector $\boldsymbol{r}$ 2-dimensional, and the distributions $\boldsymbol{f}$ 9-dimensional, containing the populations of each velocity direction. The usual macroscopic quantities can be obtained from $\boldsymbol{f}(\boldsymbol{r}, t)$ in the following manner:
-                \begin{equation}
-                \begin{split}
-                    \rho(\boldsymbol{r}, t) &= \sum_i f_i(\boldsymbol{r},t)\\
-                    \boldsymbol{u}(\boldsymbol{r}, t) &= \frac{\sum_i \boldsymbol{c}_i f_i(\boldsymbol{r},t)}{\sum_i f_i(\boldsymbol{r},t)}
-                \end{split}
-                \end{equation}
-                Where $\rho$ is the density and $\boldsymbol{u}$ is the macroscopic velocity. The distributions can now be evolved using the Lattice Boltzmann Equation: 
-                \begin{equation}
-                    \boldsymbol{f}(\boldsymbol{r} + \boldsymbol{c}_i, t+1) = \boldsymbol{f}(\boldsymbol{r}, t) + \boldsymbol{\Omega} \left[\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right]
-                \end{equation}
-                Where $\boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)$ contains the populations if the flow would be in equilibrium. The matrix $\boldsymbol{\Omega}$ is the collision operator, which relaxes the populations $\boldsymbol{f}(\boldsymbol{r}, t)$ toward the equilibrium function. Note that I make use of lattice units from now on, such that the lattice spacing and timestep are given by $\Delta r = \Delta t = 1$. The collision operator that is used in this simulation is the simple BGK operator, given by:
-                \begin{equation}
-                    \boldsymbol{\Omega}^{\text{BGK}} = -\frac{1}{\tau} \boldsymbol{I}
-                \end{equation}
-                Where $\boldsymbol{I}$ is the identity matrix and $\tau$ is the relaxation time, which is connected to the kinematic viscosity in the following manner:
-                \begin{equation}
-                    \nu = \left(\tau - \frac{1}{2}\right) c_s^2
-                \end{equation}
-                The equilibrium distributions can be calculated again from the macroscopic quantities: 
-                \begin{equation}
-                    f_i^{\text{eq}} = w_i \rho(\boldsymbol{r},t) \left(1 + \frac{\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i}{c_s^2} + \frac{(\boldsymbol{u}(\boldsymbol{r},t) \cdot \boldsymbol{c}_i)^2}{2c_s^4} - \frac{|\boldsymbol{u}(\boldsymbol{r},t)|^2}{2c_s^2}\right)
-                \end{equation}
-                Where the parameters $w_i$ are the weights of velocities $\boldsymbol{c_i}$. The speed of sound used in this model is given by $c_s = \frac{1}{\sqrt{3}}$ in lattice units. 
-                <table>
-                    <tr>
-                        <th>$i$</th>
-                        <th>$w_i$</th>
-                        <th>$\boldsymbol{c}_i$</th>
-                    </tr>
-                    <tr>
-                        <td>0</td>
-                        <td>$4/9$</td>
-                        <td>$(0, 0)$</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>$1/9$</td>
-                        <td>$(1, 0)$</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>$1/36$</td>
-                        <td>$(1, -1)$</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>$1/9$</td>
-                        <td>$(0, -1)$</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>$1/36$</td>
-                        <td>$(-1, -1)$</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>$1/9$</td>
-                        <td>$(-1, 0)$</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>$1/36$</td>
-                        <td>$(-1, 1)$</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>$1/9$</td>
-                        <td>$(0, 1)$</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>$1/36$</td>
-                        <td>$(1, 1)$</td>
-                    </tr>
-                  </table> 
-                </p>
-                <p>The simulation can now be started by initializing the density and velocity profile of the flow. In this case, the initial density profile is set to unity at every gridpoint, and the starting velocities $\boldsymbol{u}$ are zero. With this, the starting equilibrium populations $\boldsymbol{f}^{\text{eq}}$ can be calculated, and we assume that the starting populations $\boldsymbol{f}$ are in equilibrium. This allows us to start the evolution of $\boldsymbol{f}$. 
-                </p>
-                <p>The Lattice Boltzmann Equation can be split into two parts: the collision step and the streaming step. The collision step is given by:
-                \begin{equation}
-                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r}, t) - \frac{1}{\tau} \left(\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right)
-                \end{equation}
-                </p>
-                <p>
-                After the collision step, we can perform the streaming step, completing the Lattice Boltzmann Equation:
-                \begin{equation}
-                    f_i(\boldsymbol{r}, t + 1) = f_i^\ast(\boldsymbol{r} - \boldsymbol{c}_i, t)
-                \end{equation}
-                Boundary conditions have to be taken into account during the streaming step. This specific simulation makes use of periodic boundary conditions connecting the left and right of the domain. Periodic boundary conditions applied on the distribution function can be written down in a general manner:
-                \begin{equation}
-                    \boldsymbol{f}^\ast(\boldsymbol{r} + \boldsymbol{L}, t) = \boldsymbol{f}^\ast(\boldsymbol{r}, t)
-                \end{equation}
-                Where $\boldsymbol{L}$ is a vector containing the sidelengths for a square domain. This means that the populations streaming out of the domain on the right side enter the nodes on the left, and vice versa. 
-                <div style = "width: 80%;">
-                    <img src = "periodic_bcs_image.png"/>
-                </div>
-                So the streaming equation can be modified as:
-                \begin{equation}
-                    f_i(\boldsymbol{r}, t + 1) = f_i^\ast\left(\left(\boldsymbol{r} - \boldsymbol{c}_i\right) \%\, \boldsymbol{L}, t\right)
-                \end{equation}
-                Where the percent sign indicates an element-wise modulo operation. On the top and bottom of the domain I need to implement the solid walls of the pipe. To conserve mass, populations streaming out of the wall should bounce back. 
-                <div style = "width: 60%;">
-                    <img src = "bounceback_bcs_image.png"/>
-                </div>
-                Both directions of the velocity of the populations streaming out of the domain are reversed. This brings us to an additional streaming condition if populations stream into a solid wall:
-                \begin{equation}
-                    f_i(\boldsymbol{r}, t + 1) = f_j^\ast(\boldsymbol{r}, t)
-                \end{equation}
-                When $\boldsymbol{r} - \boldsymbol{c}_i$ lies on one of the solid nodes inside the wall. The index $j$ is then given by $\boldsymbol{c}_j = -\boldsymbol{c}_i$. This type of boundary condition is called halfway bounce-back, where the populations streaming out of the domain are hit the wall after a time of $\Delta t / 2$ and return back to the same node at $\Delta t$. It is assumed that the actual wall positions $\boldsymbol{r}_w$ are halfway between the outermost fluid nodes, called boundary nodes and denoted by $\boldsymbol{r}_b$, and the solid nodes just inside the wall $\boldsymbol{r}_s$.
-                </p>
-                <p>A few terms need to be added to the previously stated equations if we want to introduce an external force density $\boldsymbol{F}(\boldsymbol{r}, t)$ on the fluid. When calculating the macroscopic quantities from the distribution function $\boldsymbol{f}$, a term has to be added to the velocities:
-                \begin{equation}
-                    \boldsymbol{u}(\boldsymbol{r}, t) = \frac{\left(\sum_i \boldsymbol{c}_i f_i(\boldsymbol{r},t)\right) + \frac{1}{2}\boldsymbol{F}(\boldsymbol{r}, t)}{\sum_i f_i(\boldsymbol{r},t)}
-                \end{equation}
-                Additionally, a source term needs to be added to the collision step: 
-                \begin{equation}
-                    \boldsymbol{f}^\ast(\boldsymbol{r}, t) = \boldsymbol{f}(\boldsymbol{r}, t) - \frac{1}{\tau} \left(\boldsymbol{f}(\boldsymbol{r}, t) - \boldsymbol{f}^{\text{eq}}(\boldsymbol{r}, t)\right) + \boldsymbol{S}(\boldsymbol{r}, t)
-                \end{equation}
-                With 
-                \begin{equation}
-                    S_i(\boldsymbol{r}, t) = \left(1 - \frac{1}{2 \tau}\right) w_i \left[\frac{\boldsymbol{c}_i - \boldsymbol{u}(\boldsymbol{r}, t)}{c_s^2} + \frac{\boldsymbol{c}_i \cdot \boldsymbol{u}(\boldsymbol{r}, t)}{c_s^4}\boldsymbol{c}_i\right] \cdot \boldsymbol{F}(\boldsymbol{r}, t)
-                \end{equation}
-                According to the Guo. The complete algorithm can now be represented in the following way:
-                </p>
-                <div class = "code">
-                    Initialize the solid walls and obstacle<br>
-                    Initialize $\rho(t = 0)$ and $\boldsymbol{u}(t = 0)$<br>
-                    Calculate $\boldsymbol{f}^{\text{eq}}(t = 0)$<br>
-                    $\boldsymbol{f}(t = 0) \leftarrow \boldsymbol{f}^{\text{eq}}(t = 0)$<br><br>
-                    For $t \in [0$, $t_{\text{final}})$:<br>
-                    &emsp;&emsp;Calculate $\rho(t)$ and $\boldsymbol{u}(t)$ using $\boldsymbol{f}(t)$ and $\boldsymbol{F}$<br>
-                    &emsp;&emsp;Calculate $\boldsymbol{f}^{\text{eq}}(t)$ using $\rho(t)$ and $\boldsymbol{u}(t)$<br>
-                    &emsp;&emsp;Calculate $\boldsymbol{S}(t)$ using $\rho(t)$ and $\boldsymbol{u}(t)$<br>
-                    &emsp;&emsp;Calculate $\boldsymbol{f}^\ast(t)$ using $\boldsymbol{f}(t)$, $\boldsymbol{f}^{\text{eq}}(t)$ and $\boldsymbol{S}(t)$, collision step<br>
-                    &emsp;&emsp;Calculate $\boldsymbol{f}(t + 1)$ using $\boldsymbol{f}^\ast(t)$, streaming step<br><br>
-                    Calculate $\rho(t_{\text{final}})$ and $\boldsymbol{u}(t_{\text{final}})$ using $\boldsymbol{f}(t_{\text{final}})$ and $\boldsymbol{F}$
-                </div>
-                <br>
-                <h4>References</h4>
-                <p>[1] T. Krueger, H. Kusumaatmaja, A. Kuzmin, O. Shardt, G. Silva, and E. Viggen, The lattice boltzmann method: principles and practice, English, Graduate Texts in Physics (Springer, 2016). 
-                </p>
-            </div>
-        </div>
-        <div class = "item" id = "fractal">
-            <div style = "width: 60%; margin-top: 20px;">
-                <video controls muted loop poster = "fractal_image.png">
-                    <source src = "fractal_video.mp4" type="video/mp4"/>
-                </video>
-            </div>
-            <div class = "info">
-                <h3>Creating Fractals With the Double Pendulum</h3>
-                <p>A dynamic fractal can be created by simulating the movement of a double pendulum for many different starting positions. 
-                </p>
-                <div style = "width: 60%;">
-                    <img src = "pendulum_image.png"/>
-                </div>
-                <p>The kinetic and potential energy of this system can be calculated:
-                \begin{equation}
-                \begin{split}
-                    &T = \frac{1}{2} m_1 \left(l_1 \dot{\theta_1}\right)^2 + \frac{1}{2}m_2\left[\left(l_1\dot{\theta}_1\right)^2 + \left(l_2\dot{\theta}_2\right)^2 + 2 l_1 l_2 \dot{\theta}_1\dot{\theta}_2 \cos(\theta_1 - \theta_2)\right]\\
-                    &U = -m_1 g \left(l_1 \cos\theta_1\right) - m_2 g \left[l_1 \cos\left(\theta_1\right) + l_2 \cos\left(\theta_2\right)\right]
-                \end{split}
-                \end{equation}
-                Where a dot indicates the time derivative $\frac{d}{dt}$ and $g$ indicates the gravitational acceleration. The potential energy is set to zero at the ceiling. The lagrangian is calculated as:
-                \begin{equation}
-                    L = T - U
-                \end{equation}
-                Which brings us to the equations of motion using Lagrange's equations:
-                \begin{equation}
-                \begin{split}
-                    &\frac{\partial L}{\partial \theta_1} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_1}} = 0\\
-                    &\frac{\partial L}{\partial \theta_2} - \frac{d}{dt}\frac{\partial L}{\partial \dot{\theta_2}} = 0
-                \end{split}
-                \end{equation}
-                These equations can be rewritten in the following way:
-                \begin{equation}
-                \begin{split}
-                    &\ddot{\theta_1} = -\frac{(2 m_1 + m_2)g\sin(\theta_1) + m_2 g \sin\left(\theta_1 - 2 \theta_2\right) + 2 m_2\sin\left(\theta_1 - \theta_2\right)\left(l_2\dot{\theta_2}^2 + l_1\dot{\theta_1}^2 \cos \left(\theta_1 - \theta_2\right)\right)}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}\\
-                    &\ddot{\theta_2} = \frac{2 \sin \left(\theta_1 - \theta_2\right)\left[l_1 (m_1 + m_2) \dot{\theta_1}^2 + (m_1 + m_2) g \cos \left(\theta_1\right) + l_2 m_2 \dot{\theta_2}^2 \cos \left(\theta_1 - \theta_2\right)
-                    \right]}{l_1 \left(2 m_1 + m_2 - m_2 \cos \left(2\theta_1 - 2\theta_2\right)\right)}
-                \end{split}
-                \end{equation}
-                Which can be converted to a system of four ordinary differential equations by using $\omega_1 \equiv \dot{\theta_1}$ and $\omega_2 \equiv \dot{\theta_2}$. These equations can now be solved numerically using the Runge-Kutta method.
-                </p>
-                <div style = "width: 60%;">
-                    <img src = "fractal_image_2.jpg"/>
-                </div>
-            </div>
-        </div>
-        <div class = "item" id = "ratchet">
-            <div style = "width: 80%; margin-top: 20px;">
+            <div class = "item">
                 <img src = "ratchet_image.png"/>
+                <h3><a href = "ratchet.html">The Dynamics of a Soliton Ratchet</a></h3>
             </div>
-            <div class = "info">
-                <h3>The Dynamics of a Soliton Ratchet</h3>
-                <p>The smallest scales are currently being reached for the fabrication of electronic devices. Another way of increasing the density of these devices can be to extend them into the third dimension. One of the devices that can already be made in a three-dimensional configuration is called a shift register. It transfers data along a chain, and it can be constructed out of transistors. However, this would drastically increase the complexity of the process flow required for the production of the device. Another way of constructing a shift register is by making use of magnetic kink solitons, which are vertically transferred throughout a stack of sub-nanometer thick layers of ferromagnetic material [1]. 
-                </p>
-                <br>
-                <h4>References</h4>
-                <p>[1] R. Lavrijsen, J.-H. Lee, A. Fern ́andez-Pacheco, D. C. M. C. Petit, R. Mansell, and R. P.
-                    Cowburn, Nature 493, 647 (2013).
-                </p>
-            </div>
-        </div>
-        <div class = "item" id = "efimov">
-            <div style = "width: 75%; margin-top: 20px;">
-                <img src = "efimov_image.png"/>
-            </div>
-            <div class = "info">
-                <h3>Solving the quantum mechanical few-body problem using machine learning</h3>
-                <p>In this thesis, we aim to investigate the use of artificial neural networks for solving quantum mechanical few-body problems, which are applicable to ultracold quantum gases [1]. It is proven in earlier research that it is possible to find the Efimov ground state [2] of few-body systems using machine learning, although with artificial interactions [3]. Their method will be expanded in this thesis to make use of the more realistic Van der Waals potential. 
-                </p>
-                <p>
-                The results of [3] were replicated successfully in the first part of this thesis. However, it was found that it was not feasible to use the same method to find the shallow Efimov ground states of the Van der Waals potential at resonance. A scheme was proposed to slowly approach the resonance from the strongly bound regime, which enabled us to find the three-body parameter $\kappa_*= 0.276 \pm 0.044$ which is consistent with the universal result expected for Van der Waals potentials [4]. We will treat the possible improvements to the adapted method in this thesis, which can reduce the errors in the results given by the neural network. The method is also slow with respect to established methods [5] if the objective is to find a specific state close to resonance, but it is considerably faster when the goal is to find the ground state in a range around the resonance. There is also much room to improve the efficiency of the method, which is also discussed in this thesis. 
-                </p>
-                <p>
-                This work additionally investigates the prospects of finding excited states using a neural network, which requires some changes to the method such as an adapted loss function and a different integration method that is more suited for this particular problem. The method is also expanded in another way by introducing mass differences between the particles. This shows the robustness of the neural network method with respect to the increasing complexity of the problem. Together with the fact that the method has much room to grow in terms of accuracy and efficiency, and the flexibility of the types of problems that can be solved, a great deal of potential is shown for using artificial neural networks to solve quantum mechanical few-body problems. 
-                </p>
-                <br>
-                <h4>References</h4>
-                <p>
-                [1] C. Chin, National Science Review 3, 168 (2015).
-                <br>
-                [2] P. Naidon and S. Endo, Reports on Progress in Physics 80, 056001 (2017).
-                <br>
-                [3] H. Saito, Journal of the Physical Society of Japan 87, 074002 (2018).
-                <br>
-                [4] J. Wang, J. P. D'Incao, B. D. Esry, and C. H. Greene, Physical Review Letters 108, 10.
-1103/physrevlett.108.263001 (2012).
-                <br>
-                [5] J. van de Kraats, D. J. M. Ahmed-Braun, J.-L. Li, and S. J. J. M. F. Kokkelmans, Phys.
-Rev. A 107, 023301 (2023).
-                </p>
-            </div>
-        </div>
-        <div class = "item" id = "ising">
-            <div style = "width: 90%; margin-top: 20px;">
+            <div class = "item">
                 <video controls muted loop poster = "ising_image.png">
                     <source src = "ising_video.mp4" type="video/mp4"/>
                 </video>
+                <h3><a href = "ising.html">The Ising Model</a></h3>
             </div>
-            <div class = "info">
-                <h3>The Ising Model</h3>
-                <p>The Ising Model can be used to model the magnetic properties of ferromagnets. The system consists out of N lattice sites, each with a spin value of $s_i = \pm 1$. The total energy of the system is given by the following equation:
-                \begin{equation}
-                    E = -J \sum_{\langle i j \rangle} s_i s_j - \mu_B B \sum_i s_i
-                \end{equation}
-                Where $J$ denotes a single external magnetic field applied on the system, with $[B] = T$. For $B > 0$, this magnetic field is assumed to point parallel to positive spin values. It is assumed that all interactions between spins have the same strength $J$. The quantity $\mu_B$ indicates the Bohr magneton, which is the magnetic dipole moment of a single electron. The first term in the equation adds all energies of interactions between spins. The sum goes over all nearest neighbors, while making sure that every interaction is counted once. From this we can conclude that for $J > 0$, the lowest possible energy contribution due to the first term would be when all spins are aligned parallel. So $J > 0$ defines a ferromagnet, $J < 0$ defines an antiferromagnet and $J = 0$ defines a paramagnet. The second term calculates the total Zeeman energy of the system, assuming that every lattice site contains a single electron with magnetic moment $\mu_B$. This energy is minimal if all spins are aligned with the magnetic field. 
-                </p>
-                <p>A classical paramagnet has the following average magnetization:
-                \begin{equation}
-                    \langle M \rangle = N \mu_B \tanh \left(\frac{\mu_B B}{k_B T}\right)
-                \end{equation}
-                Where the averaging can either be over time or over realizations if an equilibrium is reached, ensuring ergodicity. This equation will be satisfied by the Ising Model with $J = 0$. For an (anti)ferromagnet with $J \neq 0$, Onsager's soluation gives the spontaneous magnetization for a 2D square lattice, with $B = 0$:
-                \begin{equation}
-                    \langle M \rangle = \pm N \mu_B \left[1 - \sinh^{-4} \left(\frac{2 J}{k_B T}\right)\right]^{\frac{1}{8}}
-                \end{equation}
-                Which holds for $T < T_c$, where $T_c$ is the critical temperature given by $k_B T_c \approx 2.269185 \cdot J$ for the 2D square lattice. For $T \geq T_c$, $\langle M \rangle = 0$. Note that the unit of the magnetization used here is given by $[M] = A m^2$, instead of the usual $[M] = A/m$. This is because the magnetization calculated here is the total of the system, instead of the magnetic moment per unit of volume. 
-                </p>
+        </div>
+        <div class = "column">
+            <div class = "item">
+                <video controls muted loop poster = "fractal_image.png">
+                    <source src = "fractal_video.mp4" type="video/mp4"/>
+                </video>
+                <h3><a href = "fractal.html">Creating Fractals With the Double Pendulum</a></h3>
+            </div>
+            <div class = "item">
+                <img src = "efimov_image.png"/>
+                <h3><a href = "efimov.html">Solving the quantum mechanical few-body problem using machine learning</a></h3>
             </div>
         </div>
     </div>
