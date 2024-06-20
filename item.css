@@ -9,6 +9,7 @@ html, body {
     padding: 20px;
     background-color: white;
     border-radius: 10px;
+    overflow-x: auto;
 }
 @media screen and (orientation:portrait){
     #container {
