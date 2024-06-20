@@ -20,12 +20,20 @@
             justify-content: space-evenly;
         }
         .column {
-            max-width: 900px;
-            width: 100%;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-self: start; 
+        }
+        @media screen and (orientation:portrait){
+            .column {
+                width: 100%;
+            }
+        }
+        @media screen and (orientation:landscape){
+            .column {
+                width: 50%;
+            }
         }
         .item {
             background-color: white;
