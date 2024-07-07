@@ -47,8 +47,7 @@
         <div class = "img-box" style = "width: 80%; max-width: 800px;">
             <img src = "ratchet_LLG.svg"/>
         </div>
-        <p>The only thing left before this equation can be solved is to find the effective magnetic field $\vec{H}_{\text{eff}}$ on each layer, which is simply the sum of all magnetic fields acting on the layer. The first contribution comes from the externally applied magnetic field $\vec{H}_{\text{ext}}(t)$. The second field is the demagnetizing field, given by $\vec{H}_{D} = -\mathbf{N} \vec{M}_n$, where we assume the ferromagnetic layer to be infinitely thin: $\mathbf{N} = \text{diag}(0, 0, 1)$. The next term in the effective field comes from the uniaxial anisotropy along the z-axis, given by $\vec{H}_A = \frac{2 K^{\text{eff}}_n}{\mu_0 M_s^2}\left(\vec{M}_n \cdot \hat{z}\right)\hat{z}$. The effective anisotropy term used here is given by: $K^{\text{eff}}_n = K_v + \frac{K_s}{t_n}$, where $K_v$ and $K_s$ are the volume and surface anisotropy, respectively. The units of the anisotropy constant are given by $[K^{\text{eff}}_n] = \frac{J}{m^3}$.
-        Furthermore, $t_n$ is the thickness of the layer along the z-axis. 
+        <p>The only thing left before this equation can be solved is to find the effective magnetic field $\vec{H}_{\text{eff}}$ on each layer, which is simply the sum of all magnetic fields acting on the layer. The first contribution comes from the externally applied magnetic field $\vec{H}_{\text{ext}}(t)$. The second field is the demagnetizing field, given by $\vec{H}_{D} = -\mathbf{N} \vec{M}_n$, where we assume the ferromagnetic layer to be infinitely thin: $\mathbf{N} = \text{diag}(0, 0, 1)$. The next term in the effective field comes from the uniaxial anisotropy along the z-axis, given by $\vec{H}_A = \frac{2 K^{\text{eff}}_n}{\mu_0 M_s^2}\left(\vec{M}_n \cdot \hat{z}\right)\hat{z}$. The effective anisotropy term used here is given by: $K^{\text{eff}}_n = K_v + \frac{K_s}{t_n}$, where $K_v$ and $K_s$ are the volume and surface anisotropy, respectively. The units of the anisotropy constant are given by $[K^{\text{eff}}_n] = \frac{J}{m^3}$. Furthermore, $t_n$ is the thickness of the layer along the z-axis. Note that I stated that the layers have an out-of-plane anisotropy axis, which means that the anisotropy field must be stronger than the demagnetizing field.  
         </p>
         <div class = "img-box" style = "width: 90%; max-width: 1200px;">
             <img src = "ratchet_effective_field.svg"/>
@@ -61,6 +60,11 @@
         \begin{equation}
             \vec{H}_{n}^{\text{eff}} =\vec{H}_{\text{ext}}(t) - \mathbf{N} \vec{M}_n + \frac{2 K^{\text{eff}}_n}{\mu_0 M_s^2} \left(\vec{M}_n \cdot \hat{z}\right)\hat{z} + \frac{J_{n-1,n}}{\mu_0 M_s^2 t_n} \vec{M}_{n-1} + \frac{J_{n,n+1}}{\mu_0 M_s^2 t_n} \vec{M}_{n+1}
         \end{equation}
+        Now that we know which fields act on the layers, we can start the analysis of the soliton ratchet using the Ising model. For this, we have a stack of 8 layers with a down soliton inserted in the middle, where all the magnetizations are perfectly aligned with the z-axis.  
+        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_ising_stack.svg"/>
+        </div>
+        We can now calculate the effective magnetic fields acting on these layers in this configuration. 
         </p>
         <br>
         <h4>References</h4>
