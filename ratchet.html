@@ -22,17 +22,17 @@
         </div>
         <p>The smallest scales are currently being reached for the fabrication of electronic devices. Another way of increasing the density of these devices can be to extend them into the third dimension. One of the devices that can already be made in a three-dimensional configuration is called a shift register. It transfers data along a chain, and it can be constructed out of transistors. However, this would drastically increase the complexity of the process flow required for the production of the device. Another way of constructing a shift register is by making use of magnetic kink solitons, which are vertically transferred throughout a stack of sub-nanometer thick layers of ferromagnetic material [1]. 
         </p>
-        <p>We start with a stack of magnetic layers with an out-of-plane uniaxial anisotropy. These layers are antiferromagnetically coupled by an RKKY coupling. This means that all layers are alligned antiparallel in the ground state. We now introduce a frustration in the stack, where two spins are now alligned parallel. This frustration is called a magnetic kink soliton.
+        <p>We start with a stack of magnetic layers with an out-of-plane uniaxial anisotropy. These layers are antiferromagnetically coupled by an RKKY coupling. This means that all layers are aligned antiparallel in the ground state. We now introduce a frustration in the stack, where two spins are aligned parallel. This frustration is called a magnetic kink soliton.
         </p>
         <div class = "img-box" style = "width: 80%; max-width: 800px;">
             <img src = "ratchet_stack_image.svg"/>
         </div>
-        <p>By carefully tuning properties such as the thicknesses of the layers and the coupling strenghts, a scheme can be devised to move the soliton vertically throughout the stack. This is done by applying an external magnetic field. 
+        <p>By carefully tuning properties such as the thicknesses of the layers and the coupling strengths, a scheme can be devised to move the soliton vertically throughout the stack. This is done by applying an external magnetic field. 
         </p>
         <div class = "img-box" style = "width: 80%; max-width: 800px;">
             <img src = "ratchet_working_image.svg"/>
         </div>
-        <p>The specifics behind the ratchet mechanism can be worked out analytically by making use of the Ising model [1]. This model assumes that each layer has a single-domain macrospin magnetization, and that the magnetization always points along the easy axis. The switching field of each layer can be computed analytically, and the Ising model assumes that a layer switches when an external field is applied that is larger than the switching field. This simple model gives a good estimation for what kind of fields are needed to switch layers during the ratchet operation. Requirements can be derived which the ratchet paramaters have to fulfill in order for the device to function. However, the Ising model is missing time dependence. This means that it can't give predictions about the speed and stability of the ratchet. 
+        <p>The specifics behind the ratchet mechanism can be worked out analytically by making use of the Ising model [1]. This model assumes that each layer has a single-domain macrospin magnetization, and that the magnetization always points along the easy axis. The switching field of each layer can be computed analytically, and the Ising model assumes that a layer switches when an external field is applied that is larger than the switching field. This simple model gives a good estimation for what kind of fields are needed to switch layers during the ratchet operation. Requirements can be derived which the ratchet parameters have to fulfill in order for the device to function. However, the Ising model is missing time dependence. This means that it can't give predictions about the speed and stability of the ratchet. 
         </p>
         <p>The analysis of the soliton ratchet done in previous work [1] can be expanded by making use of a different model for the evolution of the magnetizations of ferromagnetic materials, which is the LLG equation. This model does take into account the time evolution of each magnetization in each layer of the stack, but it still assumes macrospins. The LLG equation is given by:
         \begin{equation}
@@ -56,7 +56,7 @@
         \begin{equation}
             \vec{H}_{\text{ex}} = \frac{J_{n-1,n}}{\mu_0 M_s^2 t_n} \vec{M}_{n-1} + \frac{J_{n,n+1}}{\mu_0 M_s^2 t_n} \vec{M}_{n+1}
         \end{equation}
-        Where the units of the coupling strength are given by $[J] = \frac{J}{m^2}$. This gives the final equation for the effective magnetic field acting on layer n in the soliton ratchet:
+        Where the units of the coupling strength are given by $[J] = \frac{J}{m^2}$. The coupling strengths are defined to be negative for antiferromagnetic coupling. This gives the final equation for the effective magnetic field acting on layer n in the soliton ratchet:
         \begin{equation}
             \vec{H}_{n}^{\text{eff}} =\vec{H}_{\text{ext}}(t) - \mathbf{N} \vec{M}_n + \frac{2 K^{\text{eff}}_n}{\mu_0 M_s^2} \left(\vec{M}_n \cdot \hat{z}\right)\hat{z} + \frac{J_{n-1,n}}{\mu_0 M_s^2 t_n} \vec{M}_{n-1} + \frac{J_{n,n+1}}{\mu_0 M_s^2 t_n} \vec{M}_{n+1}
         \end{equation}
@@ -64,7 +64,49 @@
         <div class = "img-box" style = "width: 90%; max-width: 1200px;">
             <img src = "ratchet_ising_stack.svg"/>
         </div>
-        We can now calculate the effective magnetic fields acting on these layers in this configuration. 
+        We can now calculate the effective magnetic fields acting on these layers in this configuration, in the absence of an externally applied magnetic field. For now, we only look at the fields acting on layers 4 and 5, which make up the soliton. This gives the following effective fields in the z-direction:
+        \begin{equation}
+        \begin{split}
+            H^{\text{eff}}_4 &= -\frac{2 K(t_2)}{\mu_0 M_s} + M_s - \frac{\Delta J}{\mu_0 M_s t_2}\\
+            H^{\text{eff}}_5 &= -\frac{2 K(t_1)}{\mu_0 M_s} + M_s - \frac{\Delta J}{\mu_0 M_s t_1}
+        \end{split}
+        \end{equation}
+        With $K(t) = K^{\text{eff}} = K_v + \frac{K_s}{t}$. Furthermore, $\Delta J \equiv |J_1| - |J_2| > 0$. We also define the ratchet such that $t_1 < t_2$, which means that $K(t_1) > K(t_2)$. These fields are both negative for any value of $\Delta J$, as we have an out-of-plane anisotropy axis, given by the following requirements:
+        \begin{equation}
+        \begin{split}
+            \frac{2 K(t_1)}{\mu_0 M_s} &> M_s\\
+            \frac{2 K(t_2)}{\mu_0 M_s} &> M_s
+        \end{split}
+        \end{equation}
+        We now want to apply an external field in the positive z direction, to flip layer 4 and move the soliton one layer upwards. This is possible, as the field keeping layer 4 pointed downwards is weaker than the field acting on layer 5. The field applied is given by:
+        \begin{equation}
+            H^{\text{ext}}_1 = H^{\text{s}}_4 + \varepsilon_1 \Delta H_1
+        \end{equation}
+        Where the switching field $H^{\text{s}}$ is defined as the absolute value of $H^{\text{eff}}$, and $\Delta H_1 \equiv H^{\text{s}}_5-H^{\text{s}}_4$. Furthermore, the field strength of the first ratchet step is given by $0 \leq \varepsilon_1 < 1$.
+        </p>
+        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_ising_stack_2.svg"/>
+        </div>
+        <p>The second ratchet step is a bit more involved, as we now want layer 3 to flip downwards, instead of that layer 4 flips back. We again calculate the effective magnetic fields, but now on layers 3 and 4: 
+        \begin{equation}
+        \begin{split}
+            H_3^{\text{eff}} &= +\frac{2 K(t_1)}{\mu_0 M_s} - M_s - \frac{\Delta J}{\mu_0 M_s t_1}\\
+            H_4^{\text{eff}} &= +\frac{2 K(t_2)}{\mu_0 M_s} - M_s - \frac{\Delta J}{\mu_0 M_s t_2}\\
+        \end{split}
+        \end{equation}
+        We now require that these layers are unstable without an external field, which enables us to flip layer 3 instead of layer 4, and this means that $H_3^{\text{eff}}$ and $H_4^{\text{eff}}$ must be negative. This gives the following requirements:
+        \begin{equation}
+            \Delta J > \left(2 K(t_1) - \mu_0 M_s^2\right) t_1 \text{ and } \Delta J > \left(2 K(t_2) - \mu_0 M_s^2\right) t_2
+        \end{equation}
+        We now define these destabilizing fields to be the absolute values of $H_3^{\text{eff}}$ and $H_3^{\text{eff}}$ again. By reducing the field $H^{\text{ext}}_1$ to just below the destabilizing field of layer 3, this layer will flip. This means that the destabilizing field of layer 3 must be stronger than that on layer 4, which gives the final requirement:
+        \begin{equation}
+            \Delta J > 2 \Delta K \frac{t_1 t_2}{\Delta t}
+        \end{equation}
+        With $\Delta K \equiv K(t_1) - K(t_2)$ and $\Delta t \equiv t_2 - t_1$. The field applied during the second ratchet step is given by:
+        \begin{equation}
+            H^{\text{ext}}_2 = H^{\text{d}}_3 - \varepsilon_2 \Delta H_2
+        \end{equation}
+        With $\Delta H_2 \equiv H^{\text{d}}_3 - H^{\text{d}}_4$, and $0 \leq \varepsilon_2 < 1$. To summarize, the Ising model predicts that we have a working soliton ratchet if the difference in coupling strengths $\Delta J$ is large enough. 
         </p>
         <br>
         <h4>References</h4>
