@@ -118,20 +118,46 @@
             &M_s = 1.29 \text{ MA/m}
         \end{split}
         \end{equation}
-        </p>
-        Where we assume that the dependence of the saturation magnetization on the thickness of the layer is negligible. For these constants, we can use the Ising model to predict for which values of $J_1$ and $J_2$ we should have a working ratchet: 
-        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
-            <img src = "ratchet_ising_prediction.svg"/>
-        </div>
-        The difference in coupling strength $\Delta J$ must be large enough to fulfill the requirements introduced before, so the yellow region in the graph has a working ratchet, according to the Ising model. However, when trying out some values, we experienced that only in a small region within the yellow plane the ratchet actually functioned. To investigate this further, we need to quantify the stability of the ratchet. For this, we make use of the following quantity:
+        Where we assume that the dependence of the saturation magnetization on the thickness of the layer is negligible. For these constantsH^{\text{ext}}_2 the graph has a working ratchet, according to the Ising model. However, when trying out some values, we experienced that only in a small region within the yellow plane the ratchet actually functioned. To investigate this further, we need to quantify the stability of the ratchet. For this, we make use of the following quantity:
         \begin{equation}
             Q = \sum_{n\neq n_{\text{switch}}}\langle (M_n - \langle M_n \rangle)^2\rangle
         \end{equation}
         Which simply adds the variances of the magnetizations of all non-switching layers. Now we choose a few values in the yellow domain where the ratchet did function when modelled using the LLG equation, and we perform the first ratchet step. While doing this, we vary the field strength $\varepsilon_1$ and the field angle $\theta_{\text{ext}}$.
         <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_chosen_points.svg"/>
+        </div>
+        <div class = "img-box" style = "width: 95%;">
             <img src = "ratchet_stability_analysis.svg"/>
         </div>
-        The obtained graphs show nice stability patterns, with yellow hotspots of high instability. We immediately see that the ratchet is highly unstable for higher values of $\Delta J$. 
+        The obtained graphs show nice stability patterns, with yellow hotspots of high instability. We immediately see that the ratchet is highly unstable for higher values of $\Delta J$. To see what causes this, we take point 3 from the $J_1$ against $J_2$ plane and choose values for $\varepsilon_1$ and $\theta_{\text{ext}}$ in the highly unstable regime. We see that layer 4 switches like it should, but a bit later, layer 5 also switches. This can be explained by the fact that the field $H^{\text{ext}}_1$ needed to switch layer 4 comes closer and closer to the switching field of the bulk. It will never exceed the switching fields of the other layers, but unlike in the Ising model, the LLG equation does not require an applied field to exceed the switching field, especially if we apply the field at an angle. 
+        <div class = "img-box" style = "width: 90%;">
+            <img src = "ratchet_instability_high_DJ.svg"/>
+        </div>
+        We can now also investigate the switching times of the first ratchet step for the 9 chosen values of $J_1$ and $J_2$. We define a layer to be switched if $M_z > \beta M_s$, with $\beta$ arbitrarily chosen to be 0.98. 
+        <div class = "img-box" style = "width: 95%;">
+            <img src = "ratchet_switching_times.svg"/>
+        </div>
+        As expected, if we move toward higher $|J_1| + |J_2|$ values, the switching times get shorter. However, point 7, 8 and 9 suddenly shows a large region where the switching times get very large. We now take point 7 and choose values for $\varepsilon_1$ and $\theta_{\text{ext}}$ in the non-switching region. The simulation actually shows that the layer flips very fast, as expected, but that it never actually aligns completely with the z-axis. This can be explained by the fact that the exchange fields are much stronger than the anisotropy field, which tries to align the spin with the z-axis. This means that the magnetization stays aligned with the external field, which is applied at an angle.
+        <div class = "img-box" style = "width: 90%;">
+            <img src = "ratchet_instability_high_totalJ.svg"/>
+        </div> 
+        To summarize, using the LLG equation we can optimize the ratchet for the coupling strengths, field strengths and the field angle. High values for $\Delta J$ are unstable, because the bulk layers will start switching too. High $|J_1| + |J_2|$ values are unstable as the magnetizations will not align with the z-axis anymore. 
+        </p>
+        <p>The second ratchet step can also be investigated, but the results are less interesting. The stability of the step barely depends on both $\varepsilon_1$ and $\theta_{\text{ext}}$. This could be explained by the fact that the field that performs the switch is not the external field, but the intrinsic destabilizing field, which is not applied at an angle. However, the switching times only depend on the angle. The switch of a layer starts with a slow precession around the z-axis, which gradually increases until the layer completely flips. This first part is where the external field, which is applied at an angle, can speed up the process. 
+        <div class = "img-box" style = "width: 90%;">
+            <img src = "ratchet_step_2.svg"/>
+        </div> 
+        Finally, the optimized parameters can be chosen for our fixed layer thicknesses. Point 1 in the $J_1$ against $J_2$ diagram is chosen for its high stability, and the other parameters are chosen as far in the top left of the stability diagram as possible. Here, the stability is high and the switching time is low. 
+        \begin{equation}
+        \begin{split}
+            &J_1 = -0.00122\text{ J/m}^2\text{, }J_2 = -0.00034\text{ J/m}^2\\
+            &\varepsilon_1 = 0.8\text{, }\varepsilon_2 = 1.0\text{, }\theta_{\text{ext}} = 0.00095 \text{ rad}
+        \end{split}
+        \end{equation}
+        The ratchet can now be simulated using the LLG equation, which shows a reliable ratchet for 32 layers and 4 full ratchet cycles. The two ratchet steps take 2 nanoseconds each, which corresponds to a data transfer speed of 0.5 GHz. 
+        </p>
+        <p>To conclude, the Ising model can be used to derive requirements for a soliton ratchet to function. However, a model such as the LLG equation must be used to optimize the ratchet, as the Ising model does not take the time dynamics of the system into account. 
+        </p>
         <br>
         <h4>References</h4>
         <p>
