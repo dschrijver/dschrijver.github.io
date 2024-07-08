@@ -106,8 +106,32 @@
         \begin{equation}
             H^{\text{ext}}_2 = H^{\text{d}}_3 - \varepsilon_2 \Delta H_2
         \end{equation}
-        With $\Delta H_2 \equiv H^{\text{d}}_3 - H^{\text{d}}_4$, and $0 \leq \varepsilon_2 < 1$. To summarize, the Ising model predicts that we have a working soliton ratchet if the difference in coupling strengths $\Delta J$ is large enough. 
+        With $\Delta H_2 \equiv H^{\text{d}}_3 - H^{\text{d}}_4$, and $0 \leq \varepsilon_2 < 1$. To summarize, the Ising model predicts that we have a working soliton ratchet if the difference in coupling strengths $\Delta J$ is large enough. However, the Ising model can't make predictions about the speed and stability with which the ratchet will function for certain J values. For instance, one would expect that the ratchet will suffer greatly under stability issues for large coupling strengths J. The same holds for the field strengths $\varepsilon$, which can take on any value between zero and one. 
         </p>
+        <p>The LLG equation can be used to make predictions about the stability and speed of the soliton ratchet, as it calculates the time evolution of all magnetizations of the layers. A parameter that needs to be added when making use of the LLG equation is $\theta_{\text{ext}}$, which is the angle of the external field with the z-axis. When all magnetizations are perfectly aligned with the z-axis at the start, the external field needs to be applied at an angle to exert a torque on the magnetizations. This angle has great effects on the stability and speed of the ratchet. 
+        </p>
+        <p>To start the stability analysis, we choose to first fix the thicknesses $t_1$ and $t_2$ of the layers. This in turn fixes the anisotropy constants and the saturation magnetization. The chosen constants are given by [1]:
+        \begin{equation}
+        \begin{split}
+            &t_1 = 0.7 \text{ nm, }t_2 = 0.8 \text{ nm}\\
+            &K(t_1) = 1.66 \text{ MJ/m}^3\text{, }K(t_2) = 1.59 \text{ MJ/m}^3\\
+            &M_s = 1.29 \text{ MA/m}
+        \end{split}
+        \end{equation}
+        </p>
+        Where we assume that the dependence of the saturation magnetization on the thickness of the layer is negligible. For these constants, we can use the Ising model to predict for which values of $J_1$ and $J_2$ we should have a working ratchet: 
+        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_ising_prediction.svg"/>
+        </div>
+        The difference in coupling strength $\Delta J$ must be large enough to fulfill the requirements introduced before, so the yellow region in the graph has a working ratchet, according to the Ising model. However, when trying out some values, we experienced that only in a small region within the yellow plane the ratchet actually functioned. To investigate this further, we need to quantify the stability of the ratchet. For this, we make use of the following quantity:
+        \begin{equation}
+            Q = \sum_{n\neq n_{\text{switch}}}\langle (M_n - \langle M_n \rangle)^2\rangle
+        \end{equation}
+        Which simply adds the variances of the magnetizations of all non-switching layers. Now we choose a few values in the yellow domain where the ratchet did function when modelled using the LLG equation, and we perform the first ratchet step. While doing this, we vary the field strength $\varepsilon_1$ and the field angle $\theta_{\text{ext}}$.
+        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_stability_analysis.svg"/>
+        </div>
+        The obtained graphs show nice stability patterns, with yellow hotspots of high instability. We immediately see that the ratchet is highly unstable for higher values of $\Delta J$. 
         <br>
         <h4>References</h4>
         <p>
