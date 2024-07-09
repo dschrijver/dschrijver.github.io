@@ -98,7 +98,7 @@
         \begin{equation}
             \Delta J > \left(2 K(t_1) - \mu_0 M_s^2\right) t_1 \text{ and } \Delta J > \left(2 K(t_2) - \mu_0 M_s^2\right) t_2
         \end{equation}
-        We now define these destabilizing fields to be the absolute values of $H_3^{\text{eff}}$ and $H_3^{\text{eff}}$ again. By reducing the field $H^{\text{ext}}_1$ to just below the destabilizing field of layer 3, this layer will flip. This means that the destabilizing field of layer 3 must be stronger than that on layer 4, which gives the final requirement:
+        We now define these destabilizing fields to be the absolute values of $H_3^{\text{eff}}$ and $H_4^{\text{eff}}$ again. By reducing the field $H^{\text{ext}}_1$ to just below the destabilizing field of layer 3, this layer will flip. This means that the destabilizing field of layer 3 must be stronger than that on layer 4, which gives the final requirement:
         \begin{equation}
             \Delta J > 2 \Delta K \frac{t_1 t_2}{\Delta t}
         \end{equation}
@@ -118,7 +118,11 @@
             &M_s = 1.29 \text{ MA/m}
         \end{split}
         \end{equation}
-        Where we assume that the dependence of the saturation magnetization on the thickness of the layer is negligible. For these constantsH^{\text{ext}}_2 the graph has a working ratchet, according to the Ising model. However, when trying out some values, we experienced that only in a small region within the yellow plane the ratchet actually functioned. To investigate this further, we need to quantify the stability of the ratchet. For this, we make use of the following quantity:
+        Where we assume that the dependence of the saturation magnetization on the thickness of the layer is negligible. For these constants, we can use the Ising model to predict for which values of $J_1$ and $J_2$ we should have a working ratchet: 
+        <div class = "img-box" style = "width: 90%; max-width: 1200px;">
+            <img src = "ratchet_ising_prediction.svg"/>
+        </div>
+        The difference in coupling strength $\Delta J$ must be large enough to fulfill the requirements introduced before, so the yellow region in the graph has a working ratchet, according to the Ising model. However, when trying out some values, we experienced that only in a small region within the yellow plane the ratchet actually functioned. To investigate this further, we need to quantify the stability of the ratchet. For this, we make use of the following quantity:
         \begin{equation}
             Q = \sum_{n\neq n_{\text{switch}}}\langle (M_n - \langle M_n \rangle)^2\rangle
         \end{equation}
